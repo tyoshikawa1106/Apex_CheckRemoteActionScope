@@ -1,0 +1,33 @@
+<apex:page controller="CheckRemoteActionScopeController" showHeader="true" sidebar="false" id="page">
+    <apex:form id="form">
+        <apex:commandButton value=" Check Remote Action Scope!! " onClick="return onBtnClick();" />
+    </apex:form>
+    <script>
+        function onBtnClick() {
+            
+            var checkValue = 'Default';
+            window.console.log('処理開始 = ' + checkValue);
+        
+            var query = 'select Id,Name from Account limit 5';
+            {!$RemoteAction.CheckRemoteActionScopeController.getRecords}(query, function(result, event){
+                
+                window.console.log('@RemoteAction結果セット前 = ' + checkValue);
+                
+                if(event.status) {
+                    checkValue = result[0].Name
+                    window.console.log('@RemoteAction結果セット後 = ' + checkValue);
+                }
+                
+                window.console.log('event.status範囲外 = ' + checkValue);
+            });
+            
+            // ※※※ @RemoteAction範囲外では戻り値を使用できない。※※※
+            window.console.log('@RemoteAction範囲外 = ' + checkValue);
+            
+            alert('Check FireFox Console!!');
+            window.console.log('処理終了');
+            
+            return false;
+        }
+    </script>
+</apex:page>
